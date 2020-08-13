@@ -1,7 +1,9 @@
 package com.example.echo
 
 import android.os.Bundle
+import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_tick.*
 
 /**
  * Created by  On 2020/7/9
@@ -26,6 +28,25 @@ class TicksActivity : AppCompatActivity() {
         minute = second
         hour = minute
         startTicks()
+    }
+
+    @Keep
+    private fun updateTimer() {
+        ++second
+        if (second >= 60) {
+            ++minute
+            second -= 60
+            if (minute >= 60) {
+                ++hour
+                minute -= 60
+            }
+        }
+        runOnUiThread {
+            val ticks = "" + this.hour + ":" +
+                    this.minute + ":" +
+                    this@TicksActivity.second
+            this@TicksActivity.tickView.setText(ticks)
+        }
     }
     external fun startTicks()
     external fun StopTicks()
